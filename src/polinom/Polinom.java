@@ -106,10 +106,13 @@ public class Polinom {
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-        for (int i = getPolinom().length-1; i >= 0 ; i--) {
-            if(getPolinom()[i] == 1) {
-                if(i == 0) stringBuilder.append("1");
-                else stringBuilder.append("x^" + i + "+");
+        if(isZero()) stringBuilder.append(0);
+        else {
+            for (int i = getPolinom().length-1; i >= 0 ; i--) {
+                if(getPolinom()[i] == 1) {
+                    if(i == 0) stringBuilder.append("1");
+                    else stringBuilder.append("x^" + i + "+");
+                }
             }
         }
         return stringBuilder.toString();

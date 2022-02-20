@@ -11,7 +11,6 @@ public class Algorithm {
 
     public Algorithm(int[] g, int[] e, int[] l, int k) {
         this.g = new Polinom(g.clone());
-        this.e = new Polinom(e.clone());
         this.k = (k < 0) ? k : 0;
         int[] m = new int[k];
         for (int i = 0; i < l.length && i < m.length; i++) {
@@ -19,6 +18,11 @@ public class Algorithm {
         }
         this.m = new Polinom(m.clone());
         r = g.length - 1;
+        int[] error = new int[k + r];
+        for (int i = 0; i < e.length && i < error.length; i++) {
+            error[i] = e[i];
+        }
+        this.e = new Polinom(error.clone());
     }
 
     public int getK() {
@@ -41,6 +45,31 @@ public class Algorithm {
         return m;
     }
 
+    public void setG(Polinom g) {
+        this.g = new Polinom(g);
+        r = g.getSize() - 1;
+    }
+
+    public void setK(int k) {
+        this.k = k;
+    }
+
+    public void setM(Polinom l) {
+        int[] m = new int[k];
+        for (int i = 0; i < l.getSize() && i < m.length; i++) {
+            m[i] = l.getPolinom()[i];
+        }
+        this.m = new Polinom(m.clone());
+    }
+
+    public void setE(Polinom e) {
+        int[] error = new int[k + r];
+        for (int i = 0; i < e.getSize() && i < error.length; i++) {
+            error[i] = e.getPolinom()[i];
+        }
+        this.e = new Polinom(error.clone());
+    }
+
     public Polinom coder() {
         System.out.println("m(x) = " + getM());
         //step2
@@ -58,6 +87,7 @@ public class Algorithm {
     }
 
     public boolean decoder(Polinom axP) { //true - have error
+        System.out.println("e(x) = " + getE());
         Polinom bxP = new Polinom(axP.plus(getE()));
         System.out.println("b(x) = " + bxP);
         Polinom sxP = new Polinom(bxP.mod(getG()));
