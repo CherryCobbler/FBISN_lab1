@@ -14,6 +14,11 @@ public class Polinom {
         }
     }
 
+    public Polinom(Polinom polinom) {
+        this.polinom = polinom.getPolinom().clone();
+        this.size = polinom.getSize();
+    }
+
     public int[] getPolinom() {
         return polinom;
     }
@@ -22,18 +27,23 @@ public class Polinom {
         return size;
     }
 
-    public boolean setPolinom(int[] polinom) {
-        if(polinom.length != 0) {
-            this.polinom = new int[polinom.length];
-            for (int i = 0; i < polinom.length; i++) {
-                this.polinom[i] = polinom[i];
-            }
+    public boolean setPolinom(Polinom polinom) {
+        if(polinom.getSize() != 0) {
+            this.polinom = polinom.getPolinom().clone();
+            this.size = polinom.getSize();
             return true;
         }
         return false;
     }
 
-    public void plus(Polinom polinom2) {
+    public boolean isZero() {
+        for(int i = 0; i < getSize(); i++) {
+            if(getPolinom()[i] == 1) return false;
+        }
+        return true;
+    }
+
+    public Polinom plus(Polinom polinom2) {
         int sizeNew = (getSize() > polinom2.getSize()) ? getSize() : polinom2.getSize();
         int[] resultPolinom = new int[sizeNew];
         int j = 0;
@@ -53,10 +63,11 @@ public class Polinom {
                 resultPolinom[k] = polinom2.getPolinom()[k];
             }
         }
-        setPolinom(resultPolinom);
+        Polinom result = new Polinom(resultPolinom.clone());
+        return result;
     }
 
-    public void multiplication(Polinom polinom2) {
+    public Polinom multiplication(Polinom polinom2) {
         int sizeNew = polinom2.getSize() + getSize() - 1;
         int[] resultPolinom = new int[sizeNew];
         for (int i = 0; i < polinom2.getSize(); i++) {
@@ -68,16 +79,40 @@ public class Polinom {
                 }
             }
         }
-        setPolinom(resultPolinom);
+        Polinom result = new Polinom(resultPolinom.clone());
+        return result;
+    }
+
+    public int deg() {
+        for (int i = getSize() - 1; i >= 0; i--) {
+            if(getPolinom()[i] == 1) return i;
+        }
+        return 0;
+    }
+
+    public Polinom mod(Polinom gP) {
+        Polinom dividendP = new Polinom(this);
+        while (dividendP.deg() >= gP.deg()) {
+            int degree = dividendP.deg() - gP.deg();
+            int[] quotient = new int[degree + 1];
+            quotient[degree] = 1;
+            Polinom quotientP = new Polinom(quotient);
+            Polinom auxiliaryP = gP.multiplication(quotientP);
+            dividendP.setPolinom(dividendP.plus(auxiliaryP));
+        }
+        return dividendP;
     }
 
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-        for (int i = getPolinom().length-1; i >= 0 ; i--) {
-            if(getPolinom()[i] == 1) {
-                if(i == 0) stringBuilder.append("1");
-                else stringBuilder.append("x^" + i + "+");
+        if(isZero()) stringBuilder.append(0);
+        else {
+            for (int i = getPolinom().length-1; i >= 0 ; i--) {
+                if(getPolinom()[i] == 1) {
+                    if(i == 0) stringBuilder.append("1");
+                    else stringBuilder.append("x^" + i + "+");
+                }
             }
         }
         return stringBuilder.toString();
