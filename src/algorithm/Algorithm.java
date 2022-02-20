@@ -56,4 +56,19 @@ public class Algorithm {
         System.out.println("a(x) = " + axP);
         return axP;
     }
+
+    public boolean decoder(Polinom axP) { //true - have error
+        Polinom bxP = new Polinom(axP.plus(getE()));
+        System.out.println("b(x) = " + bxP);
+        Polinom sxP = new Polinom(bxP.mod(getG()));
+        System.out.println("s(x) = " + sxP);
+        if(sxP.isZero()) {
+            System.out.println("have not error");
+            return false;
+        }
+        else {
+            System.out.println("have error");
+            return true;
+        }
+    }
 }

@@ -36,6 +36,13 @@ public class Polinom {
         return false;
     }
 
+    public boolean isZero() {
+        for(int i = 0; i < getSize(); i++) {
+            if(getPolinom()[i] == 1) return false;
+        }
+        return true;
+    }
+
     public Polinom plus(Polinom polinom2) {
         int sizeNew = (getSize() > polinom2.getSize()) ? getSize() : polinom2.getSize();
         int[] resultPolinom = new int[sizeNew];
