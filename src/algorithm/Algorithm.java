@@ -42,13 +42,18 @@ public class Algorithm {
     }
 
     public Polinom coder() {
+        System.out.println("m(x) = " + getM());
         //step2
         Polinom mxrP = new Polinom(getM());
         int[] xr = new int[getR()+1];
         xr[getR()] = 1;
         Polinom xrP = new Polinom(xr);
-        mxrP.multiplication(xrP);
+        mxrP.setPolinom(mxrP.multiplication(xrP));
         Polinom cxP = new Polinom(mxrP.mod(getG()));
-        return null;
+        System.out.println("c(x) = " + cxP);
+        //step3
+        Polinom axP = new Polinom(mxrP.plus(cxP));
+        System.out.println("a(x) = " + axP);
+        return axP;
     }
 }

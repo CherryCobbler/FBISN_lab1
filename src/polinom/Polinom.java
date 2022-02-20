@@ -29,8 +29,8 @@ public class Polinom {
 
     public boolean setPolinom(Polinom polinom) {
         if(polinom.getSize() != 0) {
-            this.polinom = new int[polinom.getSize()];
             this.polinom = polinom.getPolinom().clone();
+            this.size = polinom.getSize();
             return true;
         }
         return false;
