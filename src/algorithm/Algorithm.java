@@ -12,17 +12,9 @@ public class Algorithm {
     public Algorithm(int[] g, int[] e, int[] l, int k) {
         this.g = new Polinom(g.clone());
         this.k = (k < 0) ? k : 0;
-        int[] m = new int[k];
-        for (int i = 0; i < l.length && i < m.length; i++) {
-            m[i] = l[i];
-        }
-        this.m = new Polinom(m.clone());
-        r = g.length - 1;
-        int[] error = new int[k + r];
-        for (int i = 0; i < e.length && i < error.length; i++) {
-            error[i] = e[i];
-        }
-        this.e = new Polinom(error.clone());
+        this.m = new Polinom(l.clone());
+        r = this.g.deg();
+        this.e = new Polinom(e.clone());
     }
 
     public int getK() {
@@ -47,7 +39,7 @@ public class Algorithm {
 
     public void setG(Polinom g) {
         this.g = new Polinom(g);
-        r = g.getSize() - 1;
+        r = this.g.deg();
     }
 
     public void setK(int k) {
@@ -55,22 +47,15 @@ public class Algorithm {
     }
 
     public void setM(Polinom l) {
-        int[] m = new int[k];
-        for (int i = 0; i < l.getSize() && i < m.length; i++) {
-            m[i] = l.getPolinom()[i];
-        }
-        this.m = new Polinom(m.clone());
+        this.m = new Polinom(l.getPolinom().clone());
     }
 
     public void setE(Polinom e) {
-        int[] error = new int[k + r];
-        for (int i = 0; i < e.getSize() && i < error.length; i++) {
-            error[i] = e.getPolinom()[i];
-        }
-        this.e = new Polinom(error.clone());
+        this.e = new Polinom(e.getPolinom().clone());
     }
 
     public Polinom coder() {
+        System.out.println("r = " + getR());
         System.out.println("m(x) = " + getM());
         //step2
         Polinom mxrP = new Polinom(getM());
