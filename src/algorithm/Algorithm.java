@@ -1,5 +1,5 @@
 package algorithm;
-
+//dop b
 import polinom.Polinom;
 
 public class Algorithm {
@@ -12,17 +12,9 @@ public class Algorithm {
     public Algorithm(int[] g, int[] e, int[] l, int k) {
         this.g = new Polinom(g.clone());
         this.k = (k < 0) ? k : 0;
-        int[] m = new int[k];
-        for (int i = 0; i < l.length && i < m.length; i++) {
-            m[i] = l[i];
-        }
-        this.m = new Polinom(m.clone());
-        r = g.length - 1;
-        int[] error = new int[k + r];
-        for (int i = 0; i < e.length && i < error.length; i++) {
-            error[i] = e[i];
-        }
-        this.e = new Polinom(error.clone());
+        this.m = new Polinom(l.clone());
+        r = e.length - 1;
+        this.e = new Polinom(e.clone());
     }
 
     public int getK() {
@@ -55,19 +47,11 @@ public class Algorithm {
     }
 
     public void setM(Polinom l) {
-        int[] m = new int[k];
-        for (int i = 0; i < l.getSize() && i < m.length; i++) {
-            m[i] = l.getPolinom()[i];
-        }
-        this.m = new Polinom(m.clone());
+        this.m = new Polinom(l);
     }
 
     public void setE(Polinom e) {
-        int[] error = new int[k + r];
-        for (int i = 0; i < e.getSize() && i < error.length; i++) {
-            error[i] = e.getPolinom()[i];
-        }
-        this.e = new Polinom(error.clone());
+        this.e = new Polinom(e);
     }
 
     public Polinom coder() {
