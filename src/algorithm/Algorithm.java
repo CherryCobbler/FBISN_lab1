@@ -2,6 +2,8 @@ package algorithm;
 //dop b
 import polinom.Polinom;
 
+import java.util.Vector;
+
 public class Algorithm {
     private Polinom g; //generating polynomial
     private int k; //number of information symbols
@@ -84,5 +86,35 @@ public class Algorithm {
             System.out.println("have error");
             return true;
         }
+    }
+
+    private Vector<Polinom> generationE(int size) {
+        Vector<Polinom> errorVector = new Vector<>();
+        int[] temp = new int[size];
+        errorVector.add(new Polinom(temp));
+        for(int countFix = 1; countFix < size; countFix++) {
+            for (int positionFix = 0; positionFix <= (size - countFix); positionFix++) {
+                for (int posTemp = positionFix; posTemp < (positionFix + countFix); posTemp++ ) {
+                    temp[posTemp] = 1;
+                }
+                if(countFix == 1) errorVector.add(new Polinom(temp));
+                for (int i = positionFix + countFix; i < size; i++) {
+                    temp[i] = 1;
+                    errorVector.add(new Polinom(temp));
+                    temp[i] = 0;
+                }
+                temp = new int[size];
+            }
+        }
+        for (int i = 0; i < size; i++) {
+            temp[i] = 1;
+        }
+        errorVector.add(new Polinom(temp));
+        return errorVector;
+    }
+
+    public boolean dopTask() {//???clarify the task
+
+        return true;
     }
 }

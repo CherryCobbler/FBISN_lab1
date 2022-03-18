@@ -14,6 +14,14 @@ public class Polinom {
         }
     }
 
+    public int weight () {
+        int w = 0;
+        for(int i = 0; i < getSize(); i++) {
+            if(getPolinom()[i] == 1) w++;
+        }
+        return w;
+    }
+
     public Polinom(Polinom polinom) {
         this.polinom = polinom.getPolinom().clone();
         this.size = polinom.getSize();
