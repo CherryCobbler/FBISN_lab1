@@ -88,28 +88,33 @@ public class Algorithm {
         }
     }
 
-    private Vector<Polinom> generationE(int size) {
+    public Vector<Polinom> generationE(int size, int d) {//private
         Vector<Polinom> errorVector = new Vector<>();
+        Vector<int[]> errorInteger = new Vector<>();
+        int countA = (int) Math.pow(2, size);
         int[] temp = new int[size];
-        errorVector.add(new Polinom(temp));
-        for(int countFix = 1; countFix < size; countFix++) {
-            for (int positionFix = 0; positionFix <= (size - countFix); positionFix++) {
-                for (int posTemp = positionFix; posTemp < (positionFix + countFix); posTemp++ ) {
-                    temp[posTemp] = 1;
+        for (int i = 0; i < countA; i++) {
+            errorInteger.add(temp.clone());
+        }
+        int deg2 = countA;
+        for (int column = 0; column < size; column++) {
+            deg2 = deg2 / 2;
+            int count = 0;
+            boolean zero = true;
+            for (int row = 0; row < countA; row++) {
+                if(zero) errorInteger.get(row)[column] = 2;
+                else errorInteger.get(row)[column] = 1;
+                count++;
+                if(count == deg2) {
+                    zero = !zero;
+                    count = 0;
                 }
-                if(countFix == 1) errorVector.add(new Polinom(temp));
-                for (int i = positionFix + countFix; i < size; i++) {
-                    temp[i] = 1;
-                    errorVector.add(new Polinom(temp));
-                    temp[i] = 0;
-                }
-                temp = new int[size];
             }
         }
-        for (int i = 0; i < size; i++) {
-            temp[i] = 1;
+        for (int i = 0; i < countA; i++) {
+            Polinom tempPolinom = new Polinom(errorInteger.get(i));
+            if(tempPolinom.getWeight() - 1 <= d) errorVector.add(tempPolinom);
         }
-        errorVector.add(new Polinom(temp));
         return errorVector;
     }
 

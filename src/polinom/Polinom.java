@@ -3,6 +3,7 @@ package polinom;
 public class Polinom {
     private int size;
     private int[] polinom;
+    private int weight;
 
     public Polinom(int[] polinom) {
         size = polinom.length;
@@ -11,6 +12,10 @@ public class Polinom {
             for (int i = 0; i < getSize(); i++) {
                 this.polinom[i] = polinom[i];
             }
+        }
+        this.weight = 0;
+        for(int i = 0; i < getSize(); i++) {
+            if(polinom[i] == 1) this.weight++;
         }
     }
 
@@ -29,6 +34,10 @@ public class Polinom {
 
     public int[] getPolinom() {
         return polinom;
+    }
+
+    public int getWeight() {
+        return weight;
     }
 
     public int getSize() {
