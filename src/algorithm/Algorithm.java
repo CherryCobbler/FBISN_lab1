@@ -88,7 +88,7 @@ public class Algorithm {
         }
     }
 
-    public Vector<Polinom> generationE(int size, int d) {//private
+    private Vector<Polinom> generationE(int size, int d) {
         Vector<Polinom> errorVector = new Vector<>();
         Vector<int[]> errorInteger = new Vector<>();
         int countA = (int) Math.pow(2, size);
@@ -102,8 +102,7 @@ public class Algorithm {
             int count = 0;
             boolean zero = true;
             for (int row = 0; row < countA; row++) {
-                if(zero) errorInteger.get(row)[column] = 2;
-                else errorInteger.get(row)[column] = 1;
+                if(!zero) errorInteger.get(row)[column] = 1;
                 count++;
                 if(count == deg2) {
                     zero = !zero;
@@ -111,15 +110,16 @@ public class Algorithm {
                 }
             }
         }
-        for (int i = 0; i < countA; i++) {
+        for (int i = 1; i < countA; i++) {
             Polinom tempPolinom = new Polinom(errorInteger.get(i));
             if(tempPolinom.getWeight() - 1 <= d) errorVector.add(tempPolinom);
         }
         return errorVector;
     }
 
-    public boolean dopTask() {//???clarify the task
-
+    public boolean dopTask(int d) {//???do with (l+k) ???? what d
+        Polinom word = coder();
+        Vector<Polinom> vectorError= generationE(word.getSize(), d);
         return true;
     }
 }
