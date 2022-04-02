@@ -10,13 +10,19 @@ public class Algorithm {
     private Polinom e; //error vector
     private Polinom m; //information sequence
     private int r; //degree of the polynomial
+    private int n;//size m/l
 
     public Algorithm(int[] g, int[] e, int[] l, int k) {
         this.g = new Polinom(g.clone());
         this.k = (k < 0) ? k : 0;
         this.m = new Polinom(l.clone());
+        this.n = l.length;
         r = e.length - 1;
         this.e = new Polinom(e.clone());
+    }
+
+    public int getN() {
+        return n;
     }
 
     public int getK() {
@@ -118,8 +124,23 @@ public class Algorithm {
     }
 
     public boolean dopTask(int d) {//???do with (l+k) ???? what d
-        Polinom word = coder();
-        Vector<Polinom> vectorError= generationE(word.getSize(), d);
-        return true;
+        if(getN() > k) {
+            Vector<Integer> answer = new Vector<>();
+            Polinom word = coder();
+            Vector<Polinom> vectorError = generationE(word.getSize(), d);
+            for (int i = 0; i < vectorError.size(); i++) {
+                if (vectorError.get(i).weight() <= d - 1){
+                    if(!decoder(word)) {
+                        answer.add(i);
+                    }
+                }
+            }
+            System.out.println("\nVector's errors:");
+            for (int i = 0; i < answer.size(); i++) {
+                System.out.println(vectorError.get(answer.get(i)));
+            }
+            return true;
+        }
+        return false;
     }
 }
