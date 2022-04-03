@@ -2,19 +2,27 @@ package algorithm;
 //dop b
 import polinom.Polinom;
 
+import java.util.Vector;
+
 public class Algorithm {
     private Polinom g; //generating polynomial
     private int k; //number of information symbols
     private Polinom e; //error vector
     private Polinom m; //information sequence
     private int r; //degree of the polynomial
+    private int n;//size m/l
 
     public Algorithm(int[] g, int[] e, int[] l, int k) {
         this.g = new Polinom(g.clone());
         this.k = (k < 0) ? k : 0;
         this.m = new Polinom(l.clone());
+        this.n = l.length;
         r = e.length - 1;
         this.e = new Polinom(e.clone());
+    }
+
+    public int getN() {
+        return n;
     }
 
     public int getK() {
@@ -84,5 +92,55 @@ public class Algorithm {
             System.out.println("have error");
             return true;
         }
+    }
+
+    private Vector<Polinom> generationE(int size, int d) {
+        Vector<Polinom> errorVector = new Vector<>();
+        Vector<int[]> errorInteger = new Vector<>();
+        int countA = (int) Math.pow(2, size);
+        int[] temp = new int[size];
+        for (int i = 0; i < countA; i++) {
+            errorInteger.add(temp.clone());
+        }
+        int deg2 = countA;
+        for (int column = 0; column < size; column++) {
+            deg2 = deg2 / 2;
+            int count = 0;
+            boolean zero = true;
+            for (int row = 0; row < countA; row++) {
+                if(!zero) errorInteger.get(row)[column] = 1;
+                count++;
+                if(count == deg2) {
+                    zero = !zero;
+                    count = 0;
+                }
+            }
+        }
+        for (int i = 1; i < countA; i++) {
+            Polinom tempPolinom = new Polinom(errorInteger.get(i));
+            if(tempPolinom.weight() - 1 <= d) errorVector.add(tempPolinom);
+        }
+        return errorVector;
+    }
+
+    public boolean dopTask(int d) {//???do with (l+k) ???? what d
+        if(getN() > k) {
+            Vector<Integer> answer = new Vector<>();
+            Polinom word = coder();
+            Vector<Polinom> vectorError = generationE(word.getSize(), d);
+            for (int i = 0; i < vectorError.size(); i++) {
+                setE(vectorError.get(i));
+                if(!decoder(word)) {
+                    answer.add(i);
+                }
+            }
+            System.out.println("\nVector's errors:");
+            System.out.println("d = " + d);
+            for (int i = 0; i < answer.size(); i++) {
+                System.out.println(vectorError.get(answer.get(i)));
+            }
+            return true;
+        }
+        return false;
     }
 }
