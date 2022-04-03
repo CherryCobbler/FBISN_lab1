@@ -118,7 +118,7 @@ public class Algorithm {
         }
         for (int i = 1; i < countA; i++) {
             Polinom tempPolinom = new Polinom(errorInteger.get(i));
-            if(tempPolinom.getWeight() - 1 <= d) errorVector.add(tempPolinom);
+            if(tempPolinom.weight() - 1 <= d) errorVector.add(tempPolinom);
         }
         return errorVector;
     }
@@ -129,13 +129,13 @@ public class Algorithm {
             Polinom word = coder();
             Vector<Polinom> vectorError = generationE(word.getSize(), d);
             for (int i = 0; i < vectorError.size(); i++) {
-                if (vectorError.get(i).weight() <= d - 1){
-                    if(!decoder(word)) {
-                        answer.add(i);
-                    }
+                setE(vectorError.get(i));
+                if(!decoder(word)) {
+                    answer.add(i);
                 }
             }
             System.out.println("\nVector's errors:");
+            System.out.println("d = " + d);
             for (int i = 0; i < answer.size(); i++) {
                 System.out.println(vectorError.get(answer.get(i)));
             }
