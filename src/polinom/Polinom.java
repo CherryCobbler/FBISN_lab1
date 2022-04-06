@@ -1,5 +1,7 @@
 package polinom;
 
+import java.util.Random;
+
 public class Polinom {
     private int size;
     private int[] polinom;
@@ -17,6 +19,29 @@ public class Polinom {
         for(int i = 0; i < getSize(); i++) {
             if(polinom[i] == 1) this.weight++;
         }
+    }
+
+    public void setPolinom(int[] polinom) {
+        this.polinom = polinom.clone();
+        updateSize();
+        updateWeight();
+    }
+
+    public void updateSize() {
+        this.size = getPolinom().length;
+    }
+
+    public void updateWeight() {
+        this.weight = weight();
+    }
+
+    public void randomMessage(int len) {
+        int[] polinom = new int[len];
+        for (int i = 0; i < len-1; i++) {
+            if(Math.random() <= 0.8) polinom[i] = 1;
+        }
+        polinom[len-1] = 1;
+        setPolinom(polinom);
     }
 
     public int weight() {

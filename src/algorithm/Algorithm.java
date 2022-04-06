@@ -14,7 +14,7 @@ public class Algorithm {
 
     public Algorithm(int[] g, int[] e, int[] l, int k) {
         this.g = new Polinom(g.clone());
-        this.k = (k < 0) ? k : 0;
+        this.k = (k < 0) ? 0 : k;
         this.m = new Polinom(l.clone());
         this.n = l.length;
         r = e.length - 1;
@@ -71,7 +71,7 @@ public class Algorithm {
         Polinom xrP = new Polinom(xr);
         mxrP.setPolinom(mxrP.multiplication(xrP));
         Polinom cxP = new Polinom(mxrP.mod(getG()));
-        System.out.println("c(x) = " + cxP);
+        System.out.println("c(x) mod(g(x)) = " + cxP);
         //step3
         Polinom axP = new Polinom(mxrP.plus(cxP));
         System.out.println("a(x) = " + axP);
@@ -123,24 +123,24 @@ public class Algorithm {
         return errorVector;
     }
 
-    public boolean dopTask(int d) {//???do with (l+k) ???? what d
-        if(getN() > k) {
-            Vector<Integer> answer = new Vector<>();
-            Polinom word = coder();
-            Vector<Polinom> vectorError = generationE(word.getSize(), d);
-            for (int i = 0; i < vectorError.size(); i++) {
-                setE(vectorError.get(i));
-                if(!decoder(word)) {
-                    answer.add(i);
-                }
+    public void dopTask(int d, int l) {
+        Vector<Integer> answer = new Vector<>();
+        Polinom newPolinom = new Polinom(new int[2]);
+        newPolinom.randomMessage(l+getK());
+        setM(newPolinom);
+        Polinom word = coder();
+        Vector<Polinom> vectorError = generationE(word.getSize(), d);
+        for (int i = 0; i < vectorError.size(); i++) {
+            setE(vectorError.get(i));
+            if(!decoder(word)) {
+                answer.add(i);
             }
-            System.out.println("\nVector's errors:");
-            System.out.println("d = " + d);
-            for (int i = 0; i < answer.size(); i++) {
-                System.out.println(vectorError.get(answer.get(i)));
-            }
-            return true;
         }
-        return false;
+        System.out.println("\nm(x) = " + newPolinom);
+        System.out.println("Vector's errors:");
+        System.out.println("d = " + d);
+        for (int i = 0; i < answer.size(); i++) {
+            System.out.println(vectorError.get(answer.get(i)));
+        }
     }
 }
